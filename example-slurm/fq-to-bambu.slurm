@@ -17,4 +17,4 @@ nextflow run -resume ../nf-scripts/workflows/fq-to-bambu.nf \
 --refFa ../raw-data/sgnex/chr22/reference/hg38_chr22.fa \
 --refGtf ../raw-data/sgnex/chr22/reference/hg38_chr22.gtf \
 --outdir ../results/20260129_fq-to-bambu-retry/ \
---reads '../raw-data/sgnex/chr22/fastq/*.fastq.gz'
+--reads '../raw-data/sgnex/chr22/fastq/*.fastq.gz' # Note to wrap globs in quotation ('') marks.
