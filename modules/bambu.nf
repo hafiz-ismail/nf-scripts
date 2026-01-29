@@ -7,8 +7,8 @@ params.refFa = '~/scratch/20260122_bambu/reference/Homo_sapiens.GRCh38.dna_sm.pr
 params.refGtf = '/scratch/20260122_bambu/reference/Homo_sapiens.GRCh38.91.gtf'
 params.outdir = '/scratch/20260122_bambu/20260126_results'
 
-process MAKE_ANNOTATIONS {
-//  cpus 32
+process CREATE_ANNOTATIONS {
+//  cpus 8
 //  memory '64 GB'
 
   input:
@@ -27,8 +27,8 @@ process MAKE_ANNOTATIONS {
 }
 
 
-process MAKE_RCFILES {
-//  cpus 32
+process CREATE_RCFILES {
+//  cpus 8
 //  memory '64 GB'
 
   input:
@@ -44,7 +44,7 @@ process MAKE_RCFILES {
     bambu(reads = "$bam", 
       annotations = readRDS("$annotations"),
       genome = "$refFa",
-      ncore = 32,
+      ncore = 8,
       quant = FALSE,
       discovery = FALSE,
       rcOutDir = './')
@@ -56,7 +56,7 @@ process MAKE_RCFILES {
 process BAMBU {
   publishDir params.outdir, mode: 'copy'
 
-  cpus 32
+  cpus 8
   memory '64 GB'
 
   input:
@@ -76,7 +76,7 @@ process BAMBU {
     se <- bambu(reads = reads_vec, 
       annotations = readRDS("$annotations"),
       genome = "$refFa",
-      ncore = 32)
+      ncore = 8)
 
     saveRDS(se, 'bambu-results.rds')
     """

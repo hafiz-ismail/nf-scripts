@@ -10,7 +10,7 @@ process MINIMAP2_ALIGN {
     path "${sample_id}.sam"
 
   """
-    minimap2 -ax splice -uf -k14 $refFa $reads > ${sample_id}.sam
+    minimap2 -ax splice -uf -k14 -t 8 $refFa $reads > ${sample_id}.sam
   """
 }
 
