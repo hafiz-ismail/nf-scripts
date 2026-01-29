@@ -5,16 +5,13 @@ include { SAMTOOLS } from '../modules/samtools.nf'
 include { CREATE_ANNOTATIONS; CREATE_RCFILES; BAMBU } from '../modules/bambu.nf'
 
 // Define my params here
-params.refFa = '../raw-data/sgnex/chr22/reference/hg38_chr22.fa'
-params.refGtf = '../raw-data/sgnex/chr22/reference/hg38_chr22.gtf'
-// params.reads = '/path/to/reads.fq' Note that we have to hard code this for some reason
-params.outdir = 'results'
+params.refFa = '/path/to/reference/genome/'
+params.refGtf = '/path/to/annotations/'
+params.reads = '/path/to/reads.fastq'
+params.outdir = '/path/to/save/results/'
 
 workflow {
-
-  // reads_ch = Channel.fromPath('../raw-data/fastq-subset/**/*.fastq.gz') // hard code
-
-  reads_ch = Channel.fromPath('../raw-data/sgnex/chr22/fastq/*.fastq.gz')
+  reads_ch = Channel.fromPath(params.reads)
     .map { fq -> 
         def read = (fq.name =~ /(.*)\.fastq(\.gz)?$/)[0][1] // Strip the whole .fastq.gz
         tuple(read, fq)

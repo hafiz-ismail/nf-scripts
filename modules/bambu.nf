@@ -1,11 +1,4 @@
 #!/usr/bin/env nextflow
-// Remember to set these params
-// Or to make it modular, I need to bring back my old scripts.
-// Come back to this, I just work on the minimap2 and sam2bam for now.
-
-params.refFa = '~/scratch/20260122_bambu/reference/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa'
-params.refGtf = '/scratch/20260122_bambu/reference/Homo_sapiens.GRCh38.91.gtf'
-params.outdir = '/scratch/20260122_bambu/20260126_results'
 
 process CREATE_ANNOTATIONS {
 //  cpus 8
@@ -81,23 +74,3 @@ process BAMBU {
     saveRDS(se, 'bambu-results.rds')
     """
 }
-
-
-// This kind of stuff should be in a main.nf script instead
-// Can be a truncated main.nf to directly Bambu a .bam file.
-
-// workflow {
-//   MAKE_ANNOTATIONS(Channel.fromPath(params.refFa), Channel.fromPath(params.refGtf))
-// 
-//   files_ch = Channel.fromPath("bam_all/**/*.bam")
-//   .combine(Channel.fromPath(params.refFa))
-//   .combine(Channel.fromPath(params.refGtf))
-//   .combine(MAKE_ANNOTATIONS.out)
-
-//  MAKE_RCFILES(files_ch)
-
-//  BAMBU(MAKE_RCFILES.out.collect(),
-//         Channel.fromPath(params.refFa),
-//         MAKE_ANNOTATIONS.out)
-//  }
-
