@@ -5,6 +5,9 @@
 #SBATCH --mem-per-cpu=15G
 #SBATCH --output=logs/%x_%j.out
 
+# NOTE: outdated, assumes no automatic handling of the SLURM executor
+# But can still use as reference.
+
 set -euo pipefail
 
 module load miniforge

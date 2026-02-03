@@ -1,8 +1,9 @@
 #!/usr/bin/env nextflow
 
 process CREATE_ANNOTATIONS {
-//  cpus 8
-//  memory '64 GB'
+  cpus 1
+  memory '64 GB'
+  conda 'bioconda::bioconductor-bambu=3.12.1'
 
   input:
   path refFa
@@ -21,8 +22,14 @@ process CREATE_ANNOTATIONS {
 
 
 process CREATE_RCFILES {
-//  cpus 8
-//  memory '64 GB'
+  cpus 8
+  memory '64 GB'
+  
+  conda 'bioconda::bioconductor-bambu=3.12.1 \
+  conda-forge::r-biocmanager \
+  bioconda::bioconductor-biocfilecache'
+  // BiocManager fixes a 'Install 'BiocManager' from CRAN to get 'BioCann' contrib.url' error
+  // BiocFileCache is needed to save RCfiles
 
   input:
   tuple path(bam), path(refFa), path(refGtf), path(annotations)
@@ -37,7 +44,7 @@ process CREATE_RCFILES {
     bambu(reads = "$bam", 
       annotations = readRDS("$annotations"),
       genome = "$refFa",
-      ncore = 8,
+      ncore = ${task.cpus},
       quant = FALSE,
       discovery = FALSE,
       rcOutDir = './')
@@ -51,6 +58,7 @@ process BAMBU {
 
   cpus 8
   memory '64 GB'
+  conda 'bioconda::bioconductor-bambu=3.12.1'
 
   input:
     path rcfiles
@@ -69,7 +77,7 @@ process BAMBU {
     se <- bambu(reads = reads_vec, 
       annotations = readRDS("$annotations"),
       genome = "$refFa",
-      ncore = 8)
+      ncore = ${task.cpus})
 
     saveRDS(se, 'bambu-results.rds')
     """
