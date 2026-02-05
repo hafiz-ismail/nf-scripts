@@ -6,6 +6,8 @@ params.cpus = 8
 params.memory = '64 GB'
 
 process MINIMAP2_ALIGN {
+  conda 'bioconda::minimap2'
+
   cpus params.cpus
   memory params.memory
   time '12.h'
@@ -17,7 +19,7 @@ process MINIMAP2_ALIGN {
     path "${sample_id}.sam"
 
   """
-    minimap2 -ax splice -uf -k14 -t ${task.cpus} $refFa $reads > ${sample_id}.sam
+    minimap2 -ax splice -uf -k14 -t $task.cpus $refFa $reads > ${sample_id}.sam
   """
 }
 

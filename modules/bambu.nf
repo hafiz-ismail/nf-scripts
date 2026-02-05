@@ -4,10 +4,11 @@ params.cpus = 8
 params.memory = '64 GB'
 
 process CREATE_ANNOTATIONS {
+  conda 'bioconda::bioconductor-bambu=3.12.1'
+  
   cpus 1
   memory params.memory
-  conda 'bioconda::bioconductor-bambu=3.12.1'
-  time '6.h'
+  time '1.h'
 
   input:
   path refFa

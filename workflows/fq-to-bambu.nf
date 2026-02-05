@@ -1,8 +1,10 @@
 #!/usr/bin/env nextflow
 
+include { NANOPLOT } from '../modules/nanoplot.nf'
 include { MINIMAP2_ALIGN } from '../modules/minimap2.nf'
 include { SAMTOOLS } from '../modules/samtools.nf'
 include { CREATE_ANNOTATIONS; CREATE_RCFILES; BAMBU } from '../modules/bambu.nf'
+include { MULTIQC } from '../modules/multiqc.nf'
 
 // Define my params here
 params.refFa = '/path/to/reference/genome/'
@@ -16,8 +18,9 @@ workflow {
         def read = (fq.name =~ /(.*)\.fastq(\.gz)?$/)[0][1] // Strip the whole .fastq.gz
         tuple(read, fq)
     }
-    .combine(Channel.fromPath(params.refFa))
-  MINIMAP2_ALIGN(reads_ch)
+
+  NANOPLOT(reads_ch)
+  MINIMAP2_ALIGN(reads_ch.combine(Channel.fromPath(params.refFa)))
 
 
   sam_ch = MINIMAP2_ALIGN.out
@@ -38,4 +41,12 @@ workflow {
   BAMBU(CREATE_RCFILES.out.collect(),
          Channel.fromPath(params.refFa),
          CREATE_ANNOTATIONS.out)
+
+  // Aggregate QC files
+  multiqc_ch = NANOPLOT.out
+    .mix(SAMTOOLS.out.stats)
+    .mix(SAMTOOLS.out.flagstat)
+    .collect()
+
+  MULTIQC(multiqc_ch)
 }
