@@ -1,9 +1,13 @@
 #!/usr/bin/env nextflow
 
+params.cpus = 8
+params.memory = '64 GB'
+
 process CREATE_ANNOTATIONS {
   cpus 1
-  memory '64 GB'
+  memory params.memory
   conda 'bioconda::bioconductor-bambu=3.12.1'
+  time '6.h'
 
   input:
   path refFa
@@ -22,8 +26,9 @@ process CREATE_ANNOTATIONS {
 
 
 process CREATE_RCFILES {
-  cpus 8
-  memory '64 GB'
+  cpus params.cpus
+  memory params.memory
+  time '12.h'
   
   conda 'bioconda::bioconductor-bambu=3.12.1 \
   conda-forge::r-biocmanager \
@@ -56,8 +61,10 @@ process CREATE_RCFILES {
 process BAMBU {
   publishDir params.outdir, mode: 'copy'
 
-  cpus 8
-  memory '64 GB'
+  cpus params.cpus
+  memory params.memory
+  time '12.h'
+
   conda 'bioconda::bioconductor-bambu=3.12.1'
 
   input:

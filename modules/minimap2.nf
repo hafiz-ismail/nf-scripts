@@ -2,7 +2,14 @@
 
 // Note that you'll need to pull the sample_id from the filename in your workflow
 
+params.cpus = 8
+params.memory = '64 GB'
+
 process MINIMAP2_ALIGN {
+  cpus params.cpus
+  memory params.memory
+  time '12.h'
+
   input:
     tuple val(sample_id), path(reads), path(refFa)
 
@@ -10,7 +17,7 @@ process MINIMAP2_ALIGN {
     path "${sample_id}.sam"
 
   """
-    minimap2 -ax splice -uf -k14 -t 8 $refFa $reads > ${sample_id}.sam
+    minimap2 -ax splice -uf -k14 -t ${task.cpus} $refFa $reads > ${sample_id}.sam
   """
 }
 
