@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This is also outdated, because it means I need to keep a process running forever lol
+
 # Verify executor configuration
 echo "Checking Nextflow configuration..."
 nextflow config -profile "$PROFILE" | grep -q "executor.*slurm" || {

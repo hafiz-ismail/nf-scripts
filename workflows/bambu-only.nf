@@ -7,6 +7,7 @@ params.refFa = '/path/to/reference/genome/'
 params.refGtf = '/path/to/annotations/'
 params.bams = '/path/to/files.bam'
 params.outdir = '/path/to/save/results/'
+params.cpus = 8
 
 workflow {
   CREATE_ANNOTATIONS(Channel.fromPath(params.refFa), Channel.fromPath(params.refGtf))

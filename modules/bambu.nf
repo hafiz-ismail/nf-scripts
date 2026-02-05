@@ -3,6 +3,9 @@
 params.cpus = 8
 params.memory = '64 GB'
 
+params.cpus = 8
+params.memory = '64 GB'
+
 process CREATE_ANNOTATIONS {
   conda 'bioconda::bioconductor-bambu=3.12.1'
   
@@ -27,6 +30,9 @@ process CREATE_ANNOTATIONS {
 
 
 process CREATE_RCFILES {
+  cpus params.cpus
+  memory params.memory
+  time '12.h'
   cpus params.cpus
   memory params.memory
   time '12.h'
@@ -61,6 +67,10 @@ process CREATE_RCFILES {
 // Use the previous annotations file oso
 process BAMBU {
   publishDir params.outdir, mode: 'copy'
+
+  cpus params.cpus
+  memory params.memory
+  time '12.h'
 
   cpus params.cpus
   memory params.memory
