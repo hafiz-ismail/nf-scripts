@@ -3,6 +3,7 @@
 include { NANOPLOT } from '../modules/nanoplot.nf'
 include { MINIMAP2_ALIGN } from '../modules/minimap2.nf'
 include { SAMTOOLS } from '../modules/samtools.nf'
+include { CREATE_BW } from '../modules/deeptools.nf'
 include { CREATE_ANNOTATIONS; CREATE_RCFILES; BAMBU } from '../modules/bambu.nf'
 include { MULTIQC } from '../modules/multiqc.nf'
 
@@ -27,7 +28,9 @@ workflow {
     .map { sam -> tuple(sam.baseName, sam) }
   SAMTOOLS(sam_ch)
 
-
+  dt_ch = SAMTOOLS.out.bam
+    .map { bam -> tuple(bam.baseName, bam) }
+  CREATE_BW(dt_ch)
 
   CREATE_ANNOTATIONS(Channel.fromPath(params.refFa), Channel.fromPath(params.refGtf))
 
