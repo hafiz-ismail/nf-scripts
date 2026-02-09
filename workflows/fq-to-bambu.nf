@@ -28,8 +28,18 @@ workflow {
     .map { sam -> tuple(sam.baseName, sam) }
   SAMTOOLS(sam_ch)
 
-  dt_ch = SAMTOOLS.out.bam
+
+  // Match bam files to their indexes
+  bam_ch = SAMTOOLS.out.bam
     .map { bam -> tuple(bam.baseName, bam) }
+
+  index_ch = SAMTOOLS.out.index
+    .map { index -> 
+        def sample_id = (index.name =~ /(.*)\.bam(\.bai)?$/)[0][1] // Strip the whole .bam.bai
+        tuple(sample_id, index)
+    }
+
+  dt_ch = bam_ch.join(index_ch)
   CREATE_BW(dt_ch)
 
   CREATE_ANNOTATIONS(Channel.fromPath(params.refFa), Channel.fromPath(params.refGtf))
