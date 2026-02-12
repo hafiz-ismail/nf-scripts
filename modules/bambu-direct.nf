@@ -28,7 +28,8 @@ process CREATE_ANNOTATIONS {
 
 process BAMBU_DIRECT {
   conda 'bioconda::bioconductor-bambu=3.12.1 \
-  conda-forge::r-biocmanager'
+  conda-forge::r-biocmanager \
+  bioconda::bioconductor-biocfilecache'
 
   publishDir params.outdir, mode: 'copy'
 
