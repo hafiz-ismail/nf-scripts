@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 
 process CREATE_BW {
-  cpus 1
-  memory '8 GB'
-  time '1.h'
+  cpus 8
+  memory '64 GB'
+  time '2.h'
   
   conda 'bioconda::deeptools'
 
@@ -17,6 +17,6 @@ process CREATE_BW {
     path "${sample_id}.bw"
 
     """
-    bamCoverage -b $bam -o "${sample_id}.bw"
+    bamCoverage -b $bam -o "${sample_id}.bw" -p $task.cpus
     """
 }

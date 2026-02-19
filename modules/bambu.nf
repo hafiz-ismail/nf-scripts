@@ -27,7 +27,7 @@ process CREATE_ANNOTATIONS {
 
 
 process CREATE_RCFILES {
-  cpus params.cpus
+  cpus 1
   memory params.memory
   time '12.h'
   
@@ -63,7 +63,7 @@ process BAMBU {
   publishDir params.outdir, mode: 'copy'
 
   cpus params.cpus
-  memory params.memory
+  memory '256 GB'
   time '12.h'
 
   conda 'bioconda::bioconductor-bambu=3.12.1'
