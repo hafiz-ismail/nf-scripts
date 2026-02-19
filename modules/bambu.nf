@@ -27,15 +27,15 @@ process CREATE_ANNOTATIONS {
 
 
 process CREATE_RCFILES {
+  cpus 1
+  memory params.memory
+  time '12.h'
+  
   conda 'bioconda::bioconductor-bambu=3.12.1 \
   conda-forge::r-biocmanager \
   bioconda::bioconductor-biocfilecache'
   // BiocManager fixes a 'Install 'BiocManager' from CRAN to get 'BioCann' contrib.url' error
   // BiocFileCache is needed to save RCfiles
-
-  cpus params.cpus
-  memory params.memory
-  time '12.h'
 
   input:
   tuple path(bam), path(refFa), path(refGtf), path(annotations)
@@ -65,7 +65,7 @@ process BAMBU {
   publishDir params.outdir, mode: 'copy'
 
   cpus params.cpus
-  memory params.memory
+  memory '256 GB'
   time '12.h'
 
   input:

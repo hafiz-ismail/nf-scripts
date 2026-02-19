@@ -3,8 +3,8 @@
 process SAMTOOLS {
   conda 'bioconda::samtools'
   
-  cpus 1
-  memory '8 GB'
+  cpus 8
+  memory '64 GB'
   time '1.h'
 
   // publishDir params.outdir, mode: 'copy'
@@ -25,7 +25,7 @@ process SAMTOOLS {
     samtools stats "${sample_id}.bam" > "${sample_id}.stats"
     samtools flagstat "${sample_id}.bam" > "${sample_id}.flagstat"
 
-    samtools sort "${sample_id}.bam" -o "${sample_id}-sorted.bam"
+    samtools sort "${sample_id}.bam" -o "${sample_id}-sorted.bam" -@ $task.cpus
     samtools index "${sample_id}-sorted.bam"
   """
 }
