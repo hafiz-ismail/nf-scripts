@@ -60,13 +60,13 @@ process CREATE_RCFILES {
 
 // Use the previous annotations file oso
 process BAMBU {
+  conda 'bioconda::bioconductor-bambu=3.12.1'
+  
   publishDir params.outdir, mode: 'copy'
 
   cpus params.cpus
   memory '256 GB'
   time '12.h'
-
-  conda 'bioconda::bioconductor-bambu=3.12.1'
 
   input:
     path rcfiles
